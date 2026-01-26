@@ -1,11 +1,11 @@
-export default function PlayListItem(){
+export default function PlayListItem({items}){
     return (
         <div>
             <div>
-                <h1>Electric Fever</h1>
-                <h2>Neon Jungle</h2>
+                <h1>{items.title}</h1>
+                <h2>{items.artist}</h2>
             </div>
-            <p>8:41</p>
+            <p>{items.duration}</p>
         </div>
     )
 }
