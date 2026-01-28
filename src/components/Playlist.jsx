@@ -1,4 +1,6 @@
-export default function Playlist(){
+import { useState, useEffect } from 'react';
+
+export default function PlayList(){
     const url="public/api/v1/playlist";
     const [list, setInfo] = useState([]);
     useEffect(() => {

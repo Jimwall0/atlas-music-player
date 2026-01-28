@@ -1,4 +1,7 @@
 import CoverArt from "./CoverArt";
+import SongTitle from "./SongTitle";
+import PlayControls from "./PlayControls";
+import VolumeControls from "./VolumeControls";
 
 export default function CurrentlyPlaying(){
     return (
@@ -6,7 +9,7 @@ export default function CurrentlyPlaying(){
             <CoverArt/>
             <SongTitle/>
             <PlayControls/>
-            <VoluemControls/>
+            <VolumeControls/>
         </div>
     );
 }
