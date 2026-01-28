@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import PlayListItem from "./PlayListItem";
 
 export default function PlayList(){
-    const url="public/api/v1/playlist";
+    const url="/api/v1/playlist";
     const [list, setInfo] = useState([]);
     useEffect(() => {
         fetch(url)
@@ -12,11 +13,11 @@ export default function PlayList(){
         <div>
             <h1 className="font-bold">Playlist</h1>
             <ul>
-                {list.map((item) => {
+                {list.map((item) => (
                     <li key={item.id}>
-                        <PlayListItem items={item}/>
+                        <PlayListItem title={item.title} artist={item.artist} duration={item.duration}/>
                     </li>
-                })}
+                ))}
             </ul>
         </div>
     )
