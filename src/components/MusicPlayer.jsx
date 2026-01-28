@@ -1,9 +1,9 @@
 import CurrentlyPlaying from "./CurrentlyPlaying";
-import PlayList from "./playList";
+import PlayList from "src/components/PlayList";
 
 export default function MusicPlayer() {
   return (
-    <div>
+    <div className="flex justify-content-center">
       <CurrentlyPlaying/>
       <PlayList/>
     </div>
