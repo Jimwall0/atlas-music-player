@@ -11,7 +11,7 @@ export default function PlayList(){
     }, []);
     return (
         <div>
-            <h1 className="font-bold">Playlist</h1>
+            <h1 className="font-bold text-lg pt-1 pb-3">Playlist</h1>
             <ul>
                 {list.map((item) => (
                     <li key={item.id}>
