@@ -5,6 +5,7 @@ export default function MusicPlayer() {
   return (
     <div className="flex flex-col sm:flex-row">
       <CurrentlyPlaying/>
+      <br />
       <PlayList/>
     </div>
   )
