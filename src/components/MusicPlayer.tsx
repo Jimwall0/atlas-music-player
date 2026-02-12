@@ -1,5 +1,5 @@
-import CurrentlyPlaying from "./CurrentlyPlaying";
-import PlayList from "./PlayList.jsx";
+import CurrentlyPlaying from "./CurrentlyPlaying.js";
+import PlayList from "./Playlist.js";
 
 export default function MusicPlayer() {
   return (
