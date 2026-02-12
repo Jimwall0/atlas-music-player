@@ -3,7 +3,7 @@ import PlayList from "./PlayList.jsx";
 
 export default function MusicPlayer() {
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-col sm:flex-row justify-evenly">
       <CurrentlyPlaying/>
       <br />
       <PlayList/>

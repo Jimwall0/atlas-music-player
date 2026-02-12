@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function App() {
   return (
-    <div className="h-ful flex flex-col justify-between p-8 min-h-screen">
+    <div className="h-ful flex flex-col justify-between p-8 min-h-screen bg-tahiti">
       <MusicPlayer />
       <Footer />
     </div>

@@ -16,9 +16,9 @@ export default function PlayList(){
         .then(data => setInfo(data));
     }, []);
     return (
-        <div className="pr-3">
+        <div className="h-full w-full">
             <h1 className="font-bold text-lg pt-1 pb-3">Playlist</h1>
-            <ul>
+            <ul className="flex flex-col">
                 {list.map((item) => (
                     <li key={item.id}>
                         <PlayListItem title={item.title} artist={item.artist} duration={formatDuration(item.duration)}/>
