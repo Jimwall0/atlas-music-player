@@ -102,7 +102,7 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
             <CoverArt cover={coverArt}/>
             <SongTitle title={currentSong.title} artist={currentSong.artist}/>
             <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef} disabledPrev={prevDisable} disabledNext={nextDisable} shuffle={shuffleToggle} shuffleOn={shuffle}/>
-            <VolumeControls/>
+            <VolumeControls audioRef={audioRef}/>
             <audio
             ref={audioRef}
             src={audioUrl || undefined}/>
