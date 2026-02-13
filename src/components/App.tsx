@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await fetch("/api/v1/playlist.json");
+        const response = await fetch("/api/v1/playlist");
         if (!response.ok) throw new Error("Failed to fetch playlist");
         const data: Song[] = await response.json();
         setSongs(data);

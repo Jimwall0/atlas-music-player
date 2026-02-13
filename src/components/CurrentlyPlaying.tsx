@@ -4,12 +4,19 @@ import PlayControls from "./PlayControls";
 import VolumeControls from "./VolumeControls";
 import { useState, useRef, useEffect } from "react";
 import type { Song } from "./App";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 type PlayingProps = {
     songs: Song[];
 }
 type SongFile = {
-    url: string;
+    id: string;
+    title: string;
+    artist: string;
+    genre: string;
+    duration: number;
+    cover: string;
+    song: string;
 }
 
 export default function CurrentlyPlaying({songs}: PlayingProps){
@@ -20,14 +27,25 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
     const currentSong = songs.find((song) => song.id === currentSongId) || songs[0];
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
+    const [coverArt, setCoverArt] = useState<string | null>(null);
+    let firstSong = false;
+
+    if (!currentSong) return <LoadingSkeleton/>
+
+    if (currentSongId === songs[0].id) {
+        firstSong = true;
+    } else {
+        firstSong = false;
+    }
 
     useEffect(() => {
         const fetchSongFile = async () => {
             try {
-                const res = await fetch(`/api/v1/songs/${currentSongId}.json`);
+                const res = await fetch(`/api/v1/songs/${currentSongId}`);
                 if (!res.ok) throw new Error("Failed to fetch song file");
                 const data: SongFile = await res.json();
-                setAudioUrl(data.url);
+                setAudioUrl(data.song);
+                setCoverArt(data.cover);
             } catch (err) {
                 console.error(err);
             }
@@ -46,10 +64,6 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
         }
     }
 
-    const setSpeed = (speed: number) => {
-        if (audioRef.current) audioRef.current.playbackRate = speed;
-    };
-
     const nextSong = () => {
     const currentIndex = songs.findIndex(s => s.id === currentSongId);
     const nextIndex = (currentIndex + 1) % songs.length;
@@ -59,16 +73,17 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
 
     const prevSong = () => {
     const currentIndex = songs.findIndex(s => s.id === currentSongId);
-    const prevIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
+    if (currentIndex === 0) return;
+    const prevIndex = currentIndex - 1;
     setSong(songs[prevIndex].id);
     setIsPlaying(true);
     };
 
     return (
         <div className="pr-3 bg-midnight text-white">
-            <CoverArt cover={`/api/v1/songs/${currentSong.id}`}/>
+            <CoverArt cover={coverArt}/>
             <SongTitle title={currentSong.title} artist={currentSong.artist}/>
-            <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef}/>
+            <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef} disabledPrev={firstSong}/>
             <VolumeControls/>
             <audio
             ref={audioRef}
