@@ -28,15 +28,11 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [coverArt, setCoverArt] = useState<string | null>(null);
-    let firstSong = false;
+    const [prevDisable, setPrevDisable] = useState(false);
+    const [nextDisable, setNextDisable] = useState(false);
+    const [shuffle, setShuffle] = useState(false);
 
     if (!currentSong) return <LoadingSkeleton/>
-
-    if (currentSongId === songs[0].id) {
-        firstSong = true;
-    } else {
-        firstSong = false;
-    }
 
     useEffect(() => {
         const fetchSongFile = async () => {
@@ -66,24 +62,46 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
 
     const nextSong = () => {
     const currentIndex = songs.findIndex(s => s.id === currentSongId);
-    const nextIndex = (currentIndex + 1) % songs.length;
+    if (!shuffle){
+        if (currentIndex === songs.length - 1){
+            setNextDisable(true);
+            return;
+        } else {
+            setNextDisable(false);
+        };
+    } else {
+        let randomIndex = Math.floor(Math.random() * songs.length);
+        while (songs[randomIndex].id === currentSongId && songs.length > 1) {
+            setSong(songs[randomIndex].id);
+        }
+    }
+    const nextIndex = (currentIndex + 1)
     setSong(songs[nextIndex].id);
-    setIsPlaying(true); // auto-play next song
+    setIsPlaying(true);
     };
 
     const prevSong = () => {
     const currentIndex = songs.findIndex(s => s.id === currentSongId);
-    if (currentIndex === 0) return;
+    if (currentIndex === 0){
+        setPrevDisable(true);
+        return
+    } else {
+        setPrevDisable(false);
+    };
     const prevIndex = currentIndex - 1;
     setSong(songs[prevIndex].id);
     setIsPlaying(true);
     };
 
+    const shuffleToggle = () => {
+        setShuffle(!shuffle)
+    }
+
     return (
         <div className="pr-3 bg-midnight text-white">
             <CoverArt cover={coverArt}/>
             <SongTitle title={currentSong.title} artist={currentSong.artist}/>
-            <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef} disabledPrev={firstSong}/>
+            <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef} disabledPrev={prevDisable} disabledNext={nextDisable} shuffle={shuffleToggle} shuffleOn={shuffle}/>
             <VolumeControls/>
             <audio
             ref={audioRef}
