@@ -5,6 +5,7 @@ import VolumeControls from "./VolumeControls";
 import { useState, useRef, useEffect } from "react";
 import type { Song } from "./App";
 import LoadingSkeleton from "./LoadingSkeleton";
+import AudioPlayer from "./AudioPlayer";
 
 type PlayingProps = {
     songs: Song[];
@@ -61,24 +62,28 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
     }
 
     const nextSong = () => {
-    const currentIndex = songs.findIndex(s => s.id === currentSongId);
-    if (!shuffle){
-        if (currentIndex === songs.length - 1){
-            setNextDisable(true);
-            return;
+        const currentIndex = songs.findIndex(s => s.id === currentSongId);
+
+        if (shuffle) {
+            if (songs.length > 1) {
+                let randomIndex = currentIndex;
+                while (randomIndex === currentIndex) {
+                    randomIndex = Math.floor(Math.random() * songs.length);
+                }
+                setSong(songs[randomIndex].id);
+            }
         } else {
-            setNextDisable(false);
-        };
-    } else {
-        let randomIndex = Math.floor(Math.random() * songs.length);
-        while (songs[randomIndex].id === currentSongId && songs.length > 1) {
-            setSong(songs[randomIndex].id);
+            if (currentIndex < songs.length - 1) {
+                setSong(songs[currentIndex + 1].id);
+                setNextDisable(false);
+            } else {
+                setNextDisable(true);
+                return;
+            }
         }
-    }
-    const nextIndex = (currentIndex + 1)
-    setSong(songs[nextIndex].id);
-    setIsPlaying(true);
+        setIsPlaying(true);
     };
+
 
     const prevSong = () => {
     const currentIndex = songs.findIndex(s => s.id === currentSongId);
@@ -103,9 +108,7 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
             <SongTitle title={currentSong.title} artist={currentSong.artist}/>
             <PlayControls isPlaying={isPlaying} onPlayPause={togglePlay} onNext={nextSong} onPrev={prevSong} audioRef={audioRef} disabledPrev={prevDisable} disabledNext={nextDisable} shuffle={shuffleToggle} shuffleOn={shuffle}/>
             <VolumeControls audioRef={audioRef}/>
-            <audio
-            ref={audioRef}
-            src={audioUrl || undefined}/>
+            <AudioPlayer audioRef={audioRef} audioUrl={audioUrl}/>
         </div>
     );
 }
