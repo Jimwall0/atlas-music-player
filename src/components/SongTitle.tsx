@@ -1,8 +1,8 @@
-export default function SongTitle(){
+export default function SongTitle({artist, title}: {artist: string, title: string}){
     return (
         <div>
-            <h1 className="font-bold text-2xl">Tidal Draft</h1>
-            <h2 className="text-gray-500 text-lg">Echoes of the Sea</h2>
+            <h1 className="font-bold text-2xl">{title}</h1>
+            <h2 className="text-gray-500 text-lg">{artist}</h2>
         </div>
     );
 }
