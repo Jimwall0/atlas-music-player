@@ -61,46 +61,48 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
         }
     }
 
-    const nextSong = () => {
-        const currentIndex = songs.findIndex(s => s.id === currentSongId);
-
-        if (shuffle) {
-            if (songs.length > 1) {
-                let randomIndex = currentIndex;
-                while (randomIndex === currentIndex) {
-                    randomIndex = Math.floor(Math.random() * songs.length);
-                }
-                setSong(songs[randomIndex].id);
-            }
-        } else {
-            if (currentIndex < songs.length - 1) {
-                setSong(songs[currentIndex + 1].id);
-                setNextDisable(false);
-            } else {
-                setNextDisable(true);
-                return;
-            }
-        }
+    const updateSong = (newIndex: number) => {
+        setSong(songs[newIndex].id);
+        setPrevDisable(newIndex === 0);
+        setNextDisable(newIndex === songs.length - 1);
         setIsPlaying(true);
     };
 
 
-    const prevSong = () => {
-    const currentIndex = songs.findIndex(s => s.id === currentSongId);
-    if (currentIndex === 0){
-        setPrevDisable(true);
-        return
-    } else {
-        setPrevDisable(false);
+    const nextSong = () => {
+        if (!currentSongId || songs.length === 0) return;
+
+        const currentIndex = songs.findIndex(s => s.id === currentSongId);
+
+        if (shuffle && songs.length > 1) {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * songs.length);
+            } while (randomIndex === currentIndex);
+            updateSong(randomIndex);
+        } else if (currentIndex < songs.length - 1) {
+            updateSong(currentIndex + 1);
+        } else {
+            setNextDisable(true); // end of playlist
+        }
     };
-    const prevIndex = currentIndex - 1;
-    setSong(songs[prevIndex].id);
-    setIsPlaying(true);
+
+    const prevSong = () => {
+        if (!currentSongId || songs.length === 0) return;
+
+        const currentIndex = songs.findIndex(s => s.id === currentSongId);
+
+        if (currentIndex > 0) {
+            updateSong(currentIndex - 1);
+        } else {
+            setPrevDisable(true); // start of playlist
+        }
     };
 
     const shuffleToggle = () => {
-        setShuffle(!shuffle)
-    }
+        setShuffle(!shuffle);
+    };
+
 
     return (
         <div className="pr-3 bg-midnight text-white">
