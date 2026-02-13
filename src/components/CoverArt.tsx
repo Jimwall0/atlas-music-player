@@ -1,3 +1,3 @@
-export default function CoverArt(){
-    return <img src="src/assets/placeholder.svg" alt="placeholder"/>;
+export default function CoverArt({cover}: {cover: string}){
+    return <img src={cover} alt="placeholder"/>;
 }
