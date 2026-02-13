@@ -9,8 +9,6 @@ export type Song = {
   artist: string;
   genre: string;
   duration: number;
-  cover: string;
-  song: string;
 }
 
 function App() {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Volume2 } from "lucide-react";
 
 export default function VolumeControls(){
-    const [value, setValue] = useState(60)
+    const [value, setValue] = useState(50)
     return (
         <div className="flex justify-items-stretch">
             <Volume2/>

@@ -16,9 +16,9 @@ export default function CurrentlyPlaying({songs}: PlayingProps){
     const currentSong = songs.find((song) => song.id === currentSongId) || songs[0];
     return (
         <div className="pr-3 bg-midnight text-white">
-            <CoverArt cover={currentSong.cover}/>
+            <CoverArt cover={`/api/v1/songs/${currentSong.id}`}/>
             <SongTitle title={currentSong.title} artist={currentSong.artist}/>
-            <PlayControls/>
+            <PlayControls setSong={setSong()}/>
             <VolumeControls/>
         </div>
     );
